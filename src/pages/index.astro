@@ -1,9 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import Wordmark from '../components/Wordmark.astro';
-import { LINKS } from '../data/links';
-
-const spotify = LINKS.find((l) => l.icon === 'spotify');
 ---
 
 <Base>
@@ -14,9 +11,7 @@ const spotify = LINKS.find((l) => l.icon === 'spotify');
 
       <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
         <a
-          href={spotify?.href ?? '/links'}
-          target={spotify ? '_blank' : undefined}
-          rel={spotify ? 'noopener noreferrer' : undefined}
+          href="/listen"
           class="rounded-full bg-[var(--color-accent)] px-7 py-3 text-sm tracking-wide text-[#0b0712] transition-opacity hover:opacity-90"
         >
           listen
