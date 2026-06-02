@@ -6,6 +6,8 @@ import { SITE } from '../consts';
 import { getImage } from 'astro:assets';
 import cosmicSrc from '../assets/cosmic-bg.png';
 import profileSrc from '../assets/profile.png';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
@@ -54,6 +56,13 @@ const grainSvg =
     <div class="cosmic-bg" aria-hidden="true"></div>
     <div class="cosmic-veil" aria-hidden="true"></div>
     <div class="grain" aria-hidden="true"></div>
-    <slot />
+
+    <div class="flex min-h-dvh flex-col">
+      <Header />
+      <main class="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center px-6 py-12">
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>

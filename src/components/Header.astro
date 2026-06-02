@@ -1,0 +1,39 @@
+---
+import Wordmark from './Wordmark.astro';
+
+// site nav — same on every page. "about" is the home page.
+const NAV = [
+  { label: 'about', href: '/' },
+  { label: 'listen', href: '/listen' },
+  { label: 'links', href: '/links' },
+];
+
+const current = Astro.url.pathname.replace(/\/+$/, '') || '/';
+---
+
+<header class="flex flex-col items-center px-6 pt-16 text-center">
+  <Wordmark size="lg" href="/" />
+
+  <nav class="mt-8 flex items-center gap-7 font-mono text-xs uppercase tracking-[0.25em]">
+    {
+      NAV.map((item) => {
+        const target = item.href.replace(/\/+$/, '') || '/';
+        const active = current === target;
+        return (
+          <a
+            href={item.href}
+            aria-current={active ? 'page' : undefined}
+            class:list={[
+              'transition-colors duration-200',
+              active
+                ? 'text-[var(--color-ink)]'
+                : 'text-[var(--color-ink-faint)] hover:text-[var(--color-ink-dim)]',
+            ]}
+          >
+            {item.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+</header>
