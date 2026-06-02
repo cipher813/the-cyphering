@@ -1,46 +1,99 @@
 ---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
 import Wordmark from '../components/Wordmark.astro';
-import LinkRow from '../components/LinkRow.astro';
 import { LINKS, RELEASES } from '../data/links';
-import type { LinkItem } from '../data/links';
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const fmtDate = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}`;
 
-// upcoming pre-saves only — once a drop's date passes it lives on the
-// platforms below, so it falls off the pre-save list on the next deploy.
+// upcoming pre-saves only — a drop falls off the list once its date
+// passes (it's on the streaming platforms by then). refreshes on deploy.
 const now = new Date();
 const upcoming = RELEASES.map((r) => ({ ...r, dt: new Date(`${r.date}T00:00:00`) }))
   .filter((r) => r.dt > now)
   .sort((a, b) => a.dt.getTime() - b.dt.getTime());
-
-const presaveItems: LinkItem[] = upcoming.map((r, i) => ({
-  label: r.title,
-  href: r.href,
-  icon: 'star',
-  featured: i === 0, // soonest drop highlighted
-  note: `pre-save · ${fmtDate(r.dt)}`,
-}));
 ---
 
 <Base title="links" description="every place to hear the cyphering — spotify, apple music, soundcloud, suno, youtube.">
-  <main class="mx-auto flex min-h-dvh max-w-md flex-col items-center px-6 py-16">
+  <main class="mx-auto flex min-h-dvh w-full max-w-2xl flex-col items-center px-6 py-16">
     <Wordmark size="sm" href="/" />
 
-    <div class="mt-12 flex w-full flex-col gap-3">
-      {presaveItems.map((item) => <LinkRow item={item} />)}
+    <!-- platform logos -->
+    <nav class="mt-10 flex flex-wrap items-center justify-center gap-6">
+      {
+        LINKS.map((l) => (
+          <a
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={l.label}
+            class="text-[var(--color-ink-dim)] transition-colors duration-200 hover:text-[var(--color-ink)]"
+          >
+            {l.icon === 'suno' ? (
+              <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true">
+                <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5" />
+                <text
+                  x="12"
+                  y="12.2"
+                  text-anchor="middle"
+                  dominant-baseline="central"
+                  fill="currentColor"
+                  style="font: 700 6.2px var(--font-sans); letter-spacing: 0.3px;"
+                >
+                  SUNO
+                </text>
+              </svg>
+            ) : (
+              <Icon name={`simple-icons:${l.icon}`} class="size-6" />
+            )}
+          </a>
+        ))
+      }
+    </nav>
 
-      {presaveItems.length > 0 && (
-        <div class="my-2 flex items-center gap-3 text-[var(--color-ink-faint)]">
-          <span class="h-px flex-1 bg-[var(--color-line)]"></span>
-          <span class="font-mono text-[0.65rem] uppercase tracking-[0.3em]">listen</span>
-          <span class="h-px flex-1 bg-[var(--color-line)]"></span>
-        </div>
-      )}
-
-      {LINKS.map((item) => <LinkRow item={item} />)}
-    </div>
+    <!-- pre-save cover cards -->
+    {
+      upcoming.length > 0 && (
+        <section class="mt-14 w-full">
+          <h2 class="mb-5 text-center font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[var(--color-ink-faint)]">
+            pre-save
+          </h2>
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {upcoming.map((r, i) => (
+              <a
+                href={r.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  'group relative block overflow-hidden rounded-xl border transition-all duration-200',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
+                  i === 0
+                    ? 'border-[color-mix(in_oklab,var(--color-accent)_45%,transparent)]'
+                    : 'border-[var(--color-line)] hover:border-[color-mix(in_oklab,var(--color-accent)_40%,transparent)]',
+                ]}
+              >
+                <Image
+                  src={r.cover}
+                  alt={`${r.title} cover art`}
+                  widths={[400, 800]}
+                  sizes="(min-width: 640px) 33vw, 90vw"
+                  class="aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+                <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4">
+                  <span class="text-sm leading-tight tracking-wide text-[var(--color-ink)]">{r.title}</span>
+                  <span class="shrink-0 font-mono text-[0.6rem] tracking-[0.15em] text-[var(--color-accent-soft)]">
+                    {fmtDate(r.dt)}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <footer class="mt-auto pt-16 text-center">
       <a href="/" class="font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]">
