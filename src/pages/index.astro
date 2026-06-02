@@ -53,9 +53,11 @@ const spotify = LINKS.find((l) => l.icon === 'spotify');
 
     <!-- footer -->
     <footer class="w-full border-t border-[var(--color-line)] py-10 text-center">
-      <a href="/links" class="font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]">
-        find every link &rarr;
-      </a>
+      <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)]">
+        <a href="/links" class="transition-colors hover:text-[var(--color-ink-dim)]">find every link &rarr;</a>
+        <span aria-hidden="true">·</span>
+        <a href="mailto:decode@thecyphering.com" class="transition-colors hover:text-[var(--color-ink-dim)]">decode@thecyphering.com</a>
+      </div>
     </footer>
   </main>
 </Base>

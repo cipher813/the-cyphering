@@ -96,9 +96,11 @@ const upcoming = RELEASES.map((r) => ({ ...r, dt: new Date(`${r.date}T00:00:00`)
     }
 
     <footer class="mt-auto pt-16 text-center">
-      <a href="/" class="font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]">
-        &larr; about the cyphering
-      </a>
+      <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)]">
+        <a href="/" class="transition-colors hover:text-[var(--color-ink-dim)]">&larr; about the cyphering</a>
+        <span aria-hidden="true">·</span>
+        <a href="mailto:decode@thecyphering.com" class="transition-colors hover:text-[var(--color-ink-dim)]">decode@thecyphering.com</a>
+      </div>
     </footer>
   </main>
 </Base>
