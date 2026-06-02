@@ -78,14 +78,14 @@ export const LINKS: LinkItem[] = [
     icon: 'soundcloud',
   },
   {
-    label: 'suno',
-    href: 'https://suno.com/@thecyphering',
-    icon: 'suno',
-  },
-  {
     label: 'youtube',
     href: 'https://www.youtube.com/@thecyphering',
     icon: 'youtube',
+  },
+  {
+    label: 'suno',
+    href: 'https://suno.com/@thecyphering',
+    icon: 'suno',
   },
   {
     label: 'instagram',
