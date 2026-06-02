@@ -9,6 +9,7 @@
 export type IconName =
   | 'spotify'
   | 'soundcloud'
+  | 'suno'
   | 'youtube'
   | 'instagram'
   | 'applemusic'
@@ -25,41 +26,70 @@ export interface LinkItem {
   note?: string;
 }
 
-// ── featured: swap to the live hyperfollow / latest-drop link per release ──
-export const PRESAVE: LinkItem | null = {
-  label: 'pre-save the latest',
-  href: 'https://distrokid.com/hyperfollow/REPLACE_ME', // TODO: hyperfollow url
-  icon: 'star',
-  featured: true,
-  note: 'out soon',
-};
+// ── release schedule ──────────────────────────────────────────────
+// each entry is a distrokid hyperfollow link. before its `date` the
+// page shows it as "pre-save"; on/after the date hyperfollow auto-
+// redirects to the live streaming smart-link and the page labels it
+// "out now". the soonest upcoming drop is highlighted.
+// NOTE: pre-save/out-now state is computed at BUILD time — redeploy
+// (push to main) to refresh after a drop date passes.
+export interface Release {
+  title: string;
+  /** release date, 'YYYY-MM-DD' (local) */
+  date: string;
+  /** distrokid hyperfollow url */
+  href: string;
+}
+
+export const RELEASES: Release[] = [
+  {
+    title: 'welcome to the grid',
+    date: '2026-06-05',
+    href: 'https://distrokid.com/hyperfollow/thecyphering/welcome-to-the-grid?ref=release',
+  },
+  {
+    title: 'single fire',
+    date: '2026-06-12',
+    href: 'https://distrokid.com/hyperfollow/thecyphering/single-fire?ref=release',
+  },
+  {
+    title: 'the shaping',
+    date: '2026-06-19',
+    href: 'https://distrokid.com/hyperfollow/thecyphering/the-shaping?ref=release',
+  },
+];
 
 // ── the standing platform stack ──
 export const LINKS: LinkItem[] = [
   {
     label: 'spotify',
-    href: 'https://open.spotify.com/artist/REPLACE_ME', // TODO
+    href: 'https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj',
     icon: 'spotify',
     note: 'main',
   },
   {
     label: 'apple music',
-    href: 'https://music.apple.com/artist/REPLACE_ME', // TODO
+    href: 'https://music.apple.com/us/artist/the-cyphering/6774716662',
     icon: 'applemusic',
   },
   {
     label: 'soundcloud',
-    href: 'https://soundcloud.com/REPLACE_ME', // TODO
+    href: 'https://soundcloud.com/thecyphering',
     icon: 'soundcloud',
   },
   {
+    label: 'suno',
+    href: 'https://suno.com/@thecyphering',
+    icon: 'suno',
+  },
+  {
     label: 'youtube',
-    href: 'https://youtube.com/@REPLACE_ME', // TODO
+    href: 'https://www.youtube.com/@thecyphering',
     icon: 'youtube',
   },
   {
     label: 'instagram',
-    href: 'https://instagram.com/REPLACE_ME', // TODO
+    href: 'https://www.instagram.com/thecyphering/',
     icon: 'instagram',
   },
 ];
