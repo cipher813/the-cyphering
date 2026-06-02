@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────────────────────────
 //  EDIT YOUR LINKS HERE — this is the single config for the /links page.
 // ─────────────────────────────────────────────────────────────────
-// Replace the `REPLACE_ME` URLs below with real profile/release links.
-// pre-saves are handled by distrokid hyperfollow (free, OAuth-backed) —
-// drop the per-release hyperfollow URL into `PRESAVE.href` when a drop
-// is live, or set `PRESAVE = null` to hide the featured button.
+import type { ImageMetadata } from 'astro';
+import welcomeToTheGrid from '../assets/covers/welcome-to-the-grid.png';
+import singleFire from '../assets/covers/single-fire.png';
+import theShaping from '../assets/covers/the-shaping.png';
 
 export type IconName =
   | 'spotify'
@@ -12,33 +12,31 @@ export type IconName =
   | 'suno'
   | 'youtube'
   | 'instagram'
-  | 'applemusic'
-  | 'bandcamp'
-  | 'star';
+  | 'applemusic';
 
 export interface LinkItem {
   label: string;
   href: string;
   icon: IconName;
-  /** featured = the highlighted button at the top (e.g. latest pre-save / drop). */
-  featured?: boolean;
-  /** optional sub-label, e.g. "latest single" */
-  note?: string;
 }
 
 // ── release schedule ──────────────────────────────────────────────
-// each entry is a distrokid hyperfollow link. before its `date` the
-// page shows it as "pre-save"; on/after the date hyperfollow auto-
-// redirects to the live streaming smart-link and the page labels it
-// "out now". the soonest upcoming drop is highlighted.
-// NOTE: pre-save/out-now state is computed at BUILD time — redeploy
-// (push to main) to refresh after a drop date passes.
+// each entry is a distrokid hyperfollow link with its cover art. before
+// its `date` the page shows it as an upcoming "pre-save" card; on/after
+// the date it drops off the list (it lives on the platforms by then).
+// NOTE: upcoming/past state is computed at BUILD time — redeploy (push
+// to main) to refresh after a drop date passes.
+//
+// To add a release: download its cover into src/assets/covers/, import
+// it above, and add a { title, date, href, cover } entry below.
 export interface Release {
   title: string;
   /** release date, 'YYYY-MM-DD' (local) */
   date: string;
   /** distrokid hyperfollow url */
   href: string;
+  /** cover art (imported from src/assets/covers/) */
+  cover: ImageMetadata;
 }
 
 export const RELEASES: Release[] = [
@@ -46,26 +44,28 @@ export const RELEASES: Release[] = [
     title: 'welcome to the grid',
     date: '2026-06-05',
     href: 'https://distrokid.com/hyperfollow/thecyphering/welcome-to-the-grid?ref=release',
+    cover: welcomeToTheGrid,
   },
   {
     title: 'single fire',
     date: '2026-06-12',
     href: 'https://distrokid.com/hyperfollow/thecyphering/single-fire?ref=release',
+    cover: singleFire,
   },
   {
     title: 'the shaping',
     date: '2026-06-19',
     href: 'https://distrokid.com/hyperfollow/thecyphering/the-shaping?ref=release',
+    cover: theShaping,
   },
 ];
 
-// ── the standing platform stack ──
+// ── the platform stack (rendered as a logo-only row) ──
 export const LINKS: LinkItem[] = [
   {
     label: 'spotify',
     href: 'https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj',
     icon: 'spotify',
-    note: 'main',
   },
   {
     label: 'apple music',
