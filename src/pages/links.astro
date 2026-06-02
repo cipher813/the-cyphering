@@ -9,7 +9,7 @@ const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', '
 const fmtDate = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}`;
 
 // upcoming pre-saves only — once a drop's date passes it lives on the
-// platforms below, so it falls off the pre-save list on the next deploy.
+// platforms column, so it falls off the pre-save list on the next deploy.
 const now = new Date();
 const upcoming = RELEASES.map((r) => ({ ...r, dt: new Date(`${r.date}T00:00:00`) }))
   .filter((r) => r.dt > now)
@@ -22,24 +22,44 @@ const presaveItems: LinkItem[] = upcoming.map((r, i) => ({
   featured: i === 0, // soonest drop highlighted
   note: `pre-save · ${fmtDate(r.dt)}`,
 }));
+
+const hasPresaves = presaveItems.length > 0;
 ---
 
 <Base title="links" description="every place to hear the cyphering — spotify, apple music, soundcloud, suno, youtube.">
-  <main class="mx-auto flex min-h-dvh max-w-md flex-col items-center px-6 py-16">
+  <main
+    class:list={[
+      'mx-auto flex min-h-dvh w-full flex-col items-center px-6 py-16',
+      hasPresaves ? 'max-w-3xl' : 'max-w-md',
+    ]}
+  >
     <Wordmark size="sm" href="/" />
 
-    <div class="mt-12 flex w-full flex-col gap-3">
-      {presaveItems.map((item) => <LinkRow item={item} />)}
+    <div
+      class:list={[
+        'mt-14 grid w-full grid-cols-1 gap-x-10 gap-y-12',
+        hasPresaves && 'sm:grid-cols-2 sm:items-start',
+      ]}
+    >
+      {
+        hasPresaves && (
+          <section class="flex flex-col gap-3">
+            <h2 class="mb-1 border-b border-[var(--color-line)] pb-2 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[var(--color-ink-faint)]">
+              pre-save
+            </h2>
+            {presaveItems.map((item) => (
+              <LinkRow item={item} />
+            ))}
+          </section>
+        )
+      }
 
-      {presaveItems.length > 0 && (
-        <div class="my-2 flex items-center gap-3 text-[var(--color-ink-faint)]">
-          <span class="h-px flex-1 bg-[var(--color-line)]"></span>
-          <span class="font-mono text-[0.65rem] uppercase tracking-[0.3em]">listen</span>
-          <span class="h-px flex-1 bg-[var(--color-line)]"></span>
-        </div>
-      )}
-
-      {LINKS.map((item) => <LinkRow item={item} />)}
+      <section class="flex flex-col gap-3">
+        <h2 class="mb-1 border-b border-[var(--color-line)] pb-2 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[var(--color-ink-faint)]">
+          music
+        </h2>
+        {LINKS.map((item) => <LinkRow item={item} />)}
+      </section>
     </div>
 
     <footer class="mt-auto pt-16 text-center">
