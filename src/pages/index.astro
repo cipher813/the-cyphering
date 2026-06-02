@@ -1,58 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
-import Wordmark from '../components/Wordmark.astro';
 ---
 
 <Base>
-  <main class="mx-auto flex min-h-dvh max-w-2xl flex-col items-center px-6">
-    <!-- hero -->
-    <section class="flex grow flex-col items-center justify-center py-24 text-center">
-      <Wordmark size="lg" />
+  <section class="flex flex-1 flex-col items-center justify-center py-12 text-center">
+    <div class="max-w-lg space-y-4 text-balance text-lg leading-relaxed text-[var(--color-ink-dim)]">
+      <p>
+        everything you are made of was forged in a dying star, and will be scattered
+        into infinite others. the cyphering is the soundtrack for the parts in between.
+      </p>
+      <p>
+        not background music. the cyphering turns the deepest questions
+        &mdash; reality, the cosmos, the self &mdash; into something you can
+        lose yourself to at full volume.
+      </p>
+    </div>
 
-      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
-        <a
-          href="/listen"
-          class="rounded-full bg-[var(--color-accent)] px-7 py-3 text-sm tracking-wide text-[#0b0712] transition-opacity hover:opacity-90"
-        >
-          listen
-        </a>
-        <a
-          href="/links"
-          class="rounded-full border border-[var(--color-line)] px-7 py-3 text-sm tracking-wide text-[var(--color-ink-dim)] transition-colors hover:border-[color-mix(in_oklab,var(--color-accent)_40%,transparent)] hover:text-[var(--color-ink)]"
-        >
-          all links
-        </a>
-      </div>
-
-      <div class="mt-12 max-w-lg space-y-4 text-balance text-lg leading-relaxed text-[var(--color-ink-dim)]">
-        <p>
-          everything you are made of was forged in a dying star, and will be scattered
-          into infinite others. the cyphering is the soundtrack for the parts in between.
-        </p>
-        <p>
-          not background music. the cyphering turns the deepest questions
-          &mdash; reality, the cosmos, the self &mdash; into something you can
-          lose yourself to at full volume.
-        </p>
-      </div>
-
-      <div class="mt-10 flex flex-col items-center gap-2">
-        <p class="font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)]">
-          created with AI
-        </p>
-        <p class="max-w-md font-mono text-xs leading-relaxed tracking-[0.2em] text-[var(--color-ink-faint)]">
-          psytrance · hardstyle · drum and bass · progressive trance · melodic techno
-        </p>
-      </div>
-    </section>
-
-    <!-- footer -->
-    <footer class="w-full border-t border-[var(--color-line)] py-10 text-center">
-      <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)]">
-        <a href="/links" class="transition-colors hover:text-[var(--color-ink-dim)]">find every link &rarr;</a>
-        <span aria-hidden="true">·</span>
-        <a href="mailto:decode@thecyphering.com" class="transition-colors hover:text-[var(--color-ink-dim)]">decode@thecyphering.com</a>
-      </div>
-    </footer>
-  </main>
+    <div class="mt-10 flex flex-col items-center gap-2">
+      <p class="font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)]">
+        created with AI
+      </p>
+      <p class="max-w-md font-mono text-xs leading-relaxed tracking-[0.2em] text-[var(--color-ink-faint)]">
+        psytrance · hardstyle · drum and bass · progressive trance · melodic techno
+      </p>
+    </div>
+  </section>
 </Base>
