@@ -1,0 +1,59 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import { SITE } from '../consts';
+import { getImage } from 'astro:assets';
+import cosmicSrc from '../assets/cosmic-bg.png';
+import profileSrc from '../assets/profile.png';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = SITE.description } = Astro.props;
+const pageTitle = title ? `${title} · ${SITE.name}` : SITE.name;
+
+// optimized cosmic background (4.7MB png -> lean webp) used as a fixed
+// full-bleed layer behind everything.
+const cosmic = await getImage({ src: cosmicSrc, width: 2400, format: 'webp', quality: 72 });
+
+// social-share card derived from the profile art.
+const og = await getImage({ src: profileSrc, width: 1200, format: 'jpg', quality: 80 });
+const ogImage = new URL(og.src, Astro.site).href;
+
+// inline grain so there is zero extra network request
+const grainSvg =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
+---
+
+<!doctype html>
+<html lang="en" style={`--grain-svg: ${grainSvg}; --cosmic-img: url('${cosmic.src}');`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#07070a" />
+
+    <!-- open graph / twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="canonical" href={Astro.url.href} />
+  </head>
+  <body class="min-h-dvh antialiased">
+    <div class="cosmic-bg" aria-hidden="true"></div>
+    <div class="cosmic-veil" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <slot />
+  </body>
+</html>

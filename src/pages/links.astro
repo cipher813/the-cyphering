@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import Wordmark from '../components/Wordmark.astro';
+import LinkRow from '../components/LinkRow.astro';
+import { LINKS, PRESAVE } from '../data/links';
+---
+
+<Base title="links" description="every place to hear the cyphering — spotify, soundcloud, youtube, and more.">
+  <main class="mx-auto flex min-h-dvh max-w-md flex-col items-center px-6 py-16">
+    <Wordmark size="sm" href="/" />
+
+    <div class="mt-12 flex w-full flex-col gap-3">
+      {PRESAVE && <LinkRow item={PRESAVE} />}
+
+      {PRESAVE && (
+        <div class="my-2 flex items-center gap-3 text-[var(--color-ink-faint)]">
+          <span class="h-px flex-1 bg-[var(--color-line)]"></span>
+          <span class="font-mono text-[0.65rem] uppercase tracking-[0.3em]">listen</span>
+          <span class="h-px flex-1 bg-[var(--color-line)]"></span>
+        </div>
+      )}
+
+      {LINKS.map((item) => <LinkRow item={item} />)}
+    </div>
+
+    <footer class="mt-auto pt-16 text-center">
+      <a href="/" class="font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]">
+        &larr; about the cyphering
+      </a>
+    </footer>
+  </main>
+</Base>
