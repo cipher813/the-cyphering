@@ -9,6 +9,7 @@
 export type IconName =
   | 'spotify'
   | 'soundcloud'
+  | 'suno'
   | 'youtube'
   | 'instagram'
   | 'applemusic'
@@ -38,28 +39,33 @@ export const PRESAVE: LinkItem | null = {
 export const LINKS: LinkItem[] = [
   {
     label: 'spotify',
-    href: 'https://open.spotify.com/artist/REPLACE_ME', // TODO
+    href: 'https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj',
     icon: 'spotify',
     note: 'main',
   },
   {
     label: 'apple music',
-    href: 'https://music.apple.com/artist/REPLACE_ME', // TODO
+    href: 'https://music.apple.com/us/artist/the-cyphering/6774716662',
     icon: 'applemusic',
   },
   {
     label: 'soundcloud',
-    href: 'https://soundcloud.com/REPLACE_ME', // TODO
+    href: 'https://soundcloud.com/thecyphering',
     icon: 'soundcloud',
   },
   {
+    label: 'suno',
+    href: 'https://suno.com/@thecyphering',
+    icon: 'suno',
+  },
+  {
     label: 'youtube',
-    href: 'https://youtube.com/@REPLACE_ME', // TODO
+    href: 'https://www.youtube.com/@thecyphering',
     icon: 'youtube',
   },
   {
     label: 'instagram',
-    href: 'https://instagram.com/REPLACE_ME', // TODO
+    href: 'https://www.instagram.com/thecyphering/',
     icon: 'instagram',
   },
 ];
