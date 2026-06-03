@@ -8,6 +8,7 @@ import cosmicSrc from '../assets/cosmic-bg.png';
 import profileSrc from '../assets/profile.png';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -51,11 +52,16 @@ const grainSvg =
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="canonical" href={Astro.url.href} />
+
+    <!-- client-side navigation: cross-fades pages instead of hard reloads -->
+    <ClientRouter />
   </head>
   <body class="min-h-dvh antialiased">
-    <div class="cosmic-bg" aria-hidden="true"></div>
-    <div class="cosmic-veil" aria-hidden="true"></div>
-    <div class="grain" aria-hidden="true"></div>
+    <!-- backdrop layers persist across navigation, so the space stays
+         continuous and the breathing animation never restarts -->
+    <div class="cosmic-bg" aria-hidden="true" transition:persist></div>
+    <div class="cosmic-veil" aria-hidden="true" transition:persist></div>
+    <div class="grain" aria-hidden="true" transition:persist></div>
 
     <div class="flex min-h-dvh flex-col">
       <Header />
