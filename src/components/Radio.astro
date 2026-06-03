@@ -1,0 +1,48 @@
+---
+// "the cyphering radio" — a persistent player pinned to the bottom of every
+// page. lives in the layout and is transition:persist'd, so the iframe is
+// never recreated during client-side navigation — playback (and the open/closed
+// state) carry across home / listen / links.
+//
+// plays the same source as /listen: a curated playlist if SPOTIFY.playlistId is
+// set, otherwise the artist profile (top tracks, auto-updating).
+//
+// pure-CSS toggle (a hidden checkbox) — no JS — so the open state survives
+// navigation along with the persisted node. collapsing hides the panel via
+// max-height/opacity (NOT display:none), so the iframe stays in the render tree
+// and audio keeps playing while collapsed.
+import { SPOTIFY } from '../consts';
+
+const embedSrc = SPOTIFY.playlistId
+  ? `https://open.spotify.com/embed/playlist/${SPOTIFY.playlistId}?utm_source=generator&theme=0`
+  : `https://open.spotify.com/embed/artist/${SPOTIFY.artistId}?utm_source=generator&theme=0`;
+---
+
+<div class="radio" transition:persist="cyphering-radio">
+  <input type="checkbox" id="radio-toggle" class="radio-toggle" hidden />
+
+  <div class="radio-panel">
+    <iframe
+      src={embedSrc}
+      width="100%"
+      height="152"
+      frameborder="0"
+      loading="lazy"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      title="the cyphering radio"
+    ></iframe>
+    <a
+      class="radio-note"
+      href={SPOTIFY.artistUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      previews only? log in to spotify for full tracks &rarr;
+    </a>
+  </div>
+
+  <label for="radio-toggle" class="radio-pill" aria-label="the cyphering radio — play">
+    <span class="radio-dot" aria-hidden="true"></span>
+    the cyphering radio
+  </label>
+</div>
