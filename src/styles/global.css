@@ -131,6 +131,78 @@ body { animation: page-enter 1.1s ease-out both; }
   animation-timing-function: ease;
 }
 
+/* ── the cyphering radio — persistent bottom player ──────────────── */
+.radio {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none; /* only the pill + panel are interactive */
+}
+.radio-pill,
+.radio-panel { pointer-events: auto; }
+
+.radio-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.75rem;
+  padding: 0.5rem 1.05rem;
+  border: 1px solid var(--color-line);
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--color-bg) 82%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--color-ink-dim);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.radio-pill:hover { color: var(--color-ink); border-color: var(--color-accent); }
+
+.radio-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+  animation: radio-on-air 2.4s ease-in-out infinite;
+}
+@keyframes radio-on-air { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+.radio-panel {
+  width: min(440px, calc(100vw - 1.5rem));
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  /* collapse via max-height/opacity, NOT display:none, so the iframe stays
+     in the render tree and audio keeps playing while the radio is closed */
+  transition: max-height 0.4s ease, opacity 0.35s ease, margin 0.4s ease;
+}
+.radio-toggle:checked ~ .radio-panel {
+  max-height: 260px;
+  opacity: 1;
+  margin-bottom: 0.25rem;
+}
+.radio-panel iframe { display: block; border-radius: 12px; }
+.radio-note {
+  display: block;
+  text-align: center;
+  padding: 0.5rem 0.25rem 0.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--color-ink-faint);
+  transition: color 0.2s ease;
+}
+.radio-note:hover { color: var(--color-ink-dim); }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .dot-pulse > span { animation: none; opacity: 0.6; }
@@ -139,4 +211,6 @@ body { animation: page-enter 1.1s ease-out both; }
   .grain { animation: none; }
   body { animation: none; opacity: 1; }
   .rise { animation: none; opacity: 1; transform: none; }
+  .radio-dot { animation: none; opacity: 0.8; }
+  .radio-panel { transition: none; }
 }
