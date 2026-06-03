@@ -1,39 +1,44 @@
 ---
+import { Icon } from 'astro-icon/components';
 import Wordmark from './Wordmark.astro';
+import { LINKS } from '../data/links';
 
-// site nav — same on every page. "about" is the home page.
-const NAV = [
-  { label: 'about', href: '/' },
-  { label: 'listen', href: '/listen' },
-  { label: 'links', href: '/links' },
-];
-
-const current = Astro.url.pathname.replace(/\/+$/, '') || '/';
+// single-page hub: the wordmark + the platform links (these replace the old
+// about/listen/links page menu — there are no sub-pages anymore).
 ---
 
 <header class="flex flex-col items-center px-6 pt-16 text-center">
   <Wordmark size="lg" href="/" />
 
-  <nav class="mt-8 flex items-center gap-7 font-mono text-xs uppercase tracking-[0.25em]">
+  <nav class="mt-8 flex flex-wrap items-center justify-center gap-6">
     {
-      NAV.map((item) => {
-        const target = item.href.replace(/\/+$/, '') || '/';
-        const active = current === target;
-        return (
-          <a
-            href={item.href}
-            aria-current={active ? 'page' : undefined}
-            class:list={[
-              'transition-colors duration-200',
-              active
-                ? 'text-[var(--color-ink)]'
-                : 'text-[var(--color-ink-faint)] hover:text-[var(--color-ink-dim)]',
-            ]}
-          >
-            {item.label}
-          </a>
-        );
-      })
+      LINKS.map((l) => (
+        <a
+          href={l.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={l.label}
+          class="text-[var(--color-ink-dim)] transition-colors duration-200 hover:text-[var(--color-ink)]"
+        >
+          {l.icon === 'suno' ? (
+            <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true">
+              <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5" />
+              <text
+                x="12"
+                y="12.2"
+                text-anchor="middle"
+                dominant-baseline="central"
+                fill="currentColor"
+                style="font: 700 6.2px var(--font-sans); letter-spacing: 0.3px;"
+              >
+                SUNO
+              </text>
+            </svg>
+          ) : (
+            <Icon name={`simple-icons:${l.icon}`} class="size-6" />
+          )}
+        </a>
+      ))
     }
   </nav>
 </header>

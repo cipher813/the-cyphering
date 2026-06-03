@@ -8,6 +8,12 @@ import icon from 'astro-icon';
 export default defineConfig({
   site: 'https://thecyphering.com',
   integrations: [icon()],
+  // single-page hub now — the old sub-pages fold into `/`. redirect any
+  // existing bookmarks/links so they don't 404.
+  redirects: {
+    '/listen': '/',
+    '/links': '/',
+  },
   vite: {
     plugins: [tailwindcss()],
   },

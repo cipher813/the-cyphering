@@ -8,8 +8,6 @@ import cosmicSrc from '../assets/cosmic-bg.png';
 import profileSrc from '../assets/profile.png';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Radio from '../components/Radio.astro';
-import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -53,26 +51,18 @@ const grainSvg =
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="canonical" href={Astro.url.href} />
-
-    <!-- client-side navigation: cross-fades pages instead of hard reloads -->
-    <ClientRouter />
   </head>
   <body class="min-h-dvh antialiased">
-    <!-- backdrop layers persist across navigation, so the space stays
-         continuous and the breathing animation never restarts -->
-    <div class="cosmic-bg" aria-hidden="true" transition:persist></div>
-    <div class="cosmic-veil" aria-hidden="true" transition:persist></div>
-    <div class="grain" aria-hidden="true" transition:persist></div>
+    <div class="cosmic-bg" aria-hidden="true"></div>
+    <div class="cosmic-veil" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
 
-    <div class="flex min-h-dvh flex-col pb-24">
+    <div class="flex min-h-dvh flex-col">
       <Header />
       <main class="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center px-6 py-12">
         <slot />
       </main>
       <Footer />
     </div>
-
-    <!-- persistent player — pinned bottom, survives navigation -->
-    <Radio />
   </body>
 </html>
