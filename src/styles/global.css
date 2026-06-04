@@ -34,32 +34,53 @@ body {
 }
 
 /* the real cosmic art, full-bleed and fixed behind everything.
-   a slow camera-style drift — the view eases around the nebula in a long
-   elliptical loop, so the space feels alive without spinning the (clearly
-   oriented) image. base scale is overscanned (>=1.09) so the drift never
-   reveals an edge: max translate ~2.6% sits well inside the ~4.5% margin. */
+   a single-direction pan: the nebula drifts steadily to the left, slides
+   off the edge, then you coast through deep-space black before it swings
+   back in from the right — as if you've rotated a full 360° to face it
+   again. the .cosmic-bg box is the black void shown during the coast. */
 .cosmic-bg {
   position: fixed;
   inset: 0;
   z-index: -3;
+  overflow: hidden;               /* clip the over-wide rail */
+  background-color: var(--color-bg);   /* the void seen between passes */
+  pointer-events: none;
+}
+
+/* the rail — two identical nebula tiles, each trailing a wide black gap,
+   sliding left at a constant rate. one full step (tile + gap) lands tile 2
+   exactly where tile 1 began, so the loop resets with no visible seam.
+   TUNING: --cosmic-gap is the black coast (bump it for a longer void,
+   shrink it to see the nebula again sooner); the pan duration sets speed. */
+.cosmic-rail {
+  --cosmic-tile: 100vw;
+  --cosmic-gap: 140vw;            /* deep-space black between passes */
+  position: absolute;
+  inset: 0;
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: cosmic-pan 60s linear infinite;
+}
+
+.cosmic-tile {
+  flex: none;
+  width: var(--cosmic-tile);
+  height: 100%;
+  margin-right: var(--cosmic-gap);
   background-image: var(--cosmic-img);
   background-size: cover;
   /* favor the dark, deep-space left/center on tall phone viewports */
   background-position: 62% center;
   background-repeat: no-repeat;
-  pointer-events: none;
-  transform: scale(1.09);
-  will-change: transform;
-  animation: cosmic-drift 58s ease-in-out infinite;
+  transform: scale(1.06);         /* slight overscan — never a hard edge */
 }
 
-/* barely perceptible but noticeable — a gentle orbit, not a spin */
-@keyframes cosmic-drift {
-  0%   { transform: scale(1.09) translate3d(0, 0, 0); }
-  25%  { transform: scale(1.11) translate3d(-2.6%, -1.4%, 0); }
-  50%  { transform: scale(1.10) translate3d(-1.2%, 2.0%, 0); }
-  75%  { transform: scale(1.12) translate3d(2.4%, 0.6%, 0); }
-  100% { transform: scale(1.09) translate3d(0, 0, 0); }
+@keyframes cosmic-pan {
+  from { transform: translate3d(0, 0, 0); }
+  /* one tile + one gap to the left → tile 2 sits exactly where tile 1
+     started, making the reset invisible. */
+  to   { transform: translate3d(calc(-1 * (var(--cosmic-tile) + var(--cosmic-gap))), 0, 0); }
 }
 
 /* legibility veil — darkens center + edges so copy reads over any region,
@@ -129,8 +150,8 @@ body { animation: page-enter 1.1s ease-out both; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .dot-pulse > span { animation: none; opacity: 0.6; }
-  /* hold every atmospheric motion still, at its resting/visible state */
-  .cosmic-bg { animation: none; transform: none; }
+  /* hold every atmospheric motion still — nebula rests fully in view */
+  .cosmic-rail { animation: none; transform: none; }
   .grain { animation: none; }
   body { animation: none; opacity: 1; }
   .rise { animation: none; opacity: 1; transform: none; }
