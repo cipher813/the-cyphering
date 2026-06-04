@@ -12,12 +12,14 @@ created with AI · **psytrance · hardstyle · drum and bass · progressive tran
 
 ## listen / follow
 
-- **spotify** (main) — https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj
-- **instagram** (hub) — https://www.instagram.com/thecyphering/
-- **soundcloud** — https://soundcloud.com/thecyphering
-- **youtube** — https://www.youtube.com/@thecyphering
-- **suno** — https://suno.com/@thecyphering
-- **apple music** — https://music.apple.com/us/artist/the-cyphering/6774716662
+[![Spotify](https://img.shields.io/badge/Spotify-1DB954?style=for-the-badge&logo=spotify&logoColor=white)](https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/thecyphering/)
+[![SoundCloud](https://img.shields.io/badge/SoundCloud-FF5500?style=for-the-badge&logo=soundcloud&logoColor=white)](https://soundcloud.com/thecyphering)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@thecyphering)
+[![Suno](https://img.shields.io/badge/Suno-000000?style=for-the-badge&logo=suno&logoColor=white)](https://suno.com/@thecyphering)
+[![Apple Music](https://img.shields.io/badge/Apple%20Music-FA243C?style=for-the-badge&logo=applemusic&logoColor=white)](https://music.apple.com/us/artist/the-cyphering/6774716662)
+
+spotify is the main / primary platform; instagram is the social hub.
 
 decode@thecyphering.com
 
