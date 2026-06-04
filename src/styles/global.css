@@ -34,33 +34,52 @@ body {
 }
 
 /* the real cosmic art — a seamless equirectangular 360° panorama, full-bleed
-   and fixed behind everything. it tiles horizontally (its left and right edges
-   match), so panning it sideways IS a true rotation: the nebula eases past,
-   you turn through the dark side of the sky (its own stars + faint glow), and
-   it comes back around — no seam, no gap, no tricks. the image carries the
-   whole 360, so there is no fabricated starfield or dissolve anymore.
-   background-size `auto 100%` fits the height and keeps the native 2:1 ratio,
-   so one tile is exactly 200vh wide; a 200vh shift loops with no seam.
-   TUNING: the pan duration is the rotation speed — slower = calmer. */
+   and fixed behind everything. its left and right edges match, so panning it
+   sideways IS a true rotation: the nebula eases past, you turn through the dark
+   side of the sky (its own stars + faint glow), and it comes back around — no
+   seam, no gap, no tricks. the image carries the whole 360.
+   the rail holds three identical copies edge to edge (each exactly 2:1, so one
+   copy is 200vh wide). translating left by one copy lands the next exactly
+   where the last was; because the panorama itself wraps, the whole scroll is
+   one continuous rotation. transform/translate3d (not background-position)
+   keeps the ultra-slow drift buttery — sub-pixel on the GPU, where a
+   background-position this slow would visibly step. three copies guarantee
+   coverage out to a 4:1 viewport.
+   TUNING: duration = rotation speed. ~2400s is a barely-perceptible ≈1cm/min
+   on a typical viewport (it scales with viewport height — faster on tall
+   desktops, slower on short ones). */
 .cosmic-bg {
   position: fixed;
   inset: 0;
   z-index: -3;
+  overflow: hidden;               /* clip the over-wide rail */
   background-color: var(--color-bg);   /* matches the panorama's dark sky */
-  background-image: var(--cosmic-img);
-  background-repeat: repeat-x;
-  background-size: auto 100%;
-  background-position: 0 center;
   pointer-events: none;
-  will-change: background-position;
-  animation: cosmic-pan 150s linear infinite;
+}
+
+.cosmic-rail {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: cosmic-pan 2400s linear infinite;
+}
+
+.cosmic-tile {
+  flex: none;
+  width: 200vh;                   /* exactly 2:1 against the 100vh height */
+  height: 100%;
+  background-image: var(--cosmic-img);
+  background-size: 100% 100%;     /* no distortion — tile and image are both 2:1 */
+  background-repeat: no-repeat;
 }
 
 @keyframes cosmic-pan {
-  from { background-position: 0 center; }
-  /* one full image width → the loop point coincides with the seamless
-     wrap, so the rotation never visibly resets. */
-  to   { background-position: -200vh center; }
+  from { transform: translate3d(0, 0, 0); }
+  /* exactly one copy to the left → copy 2 sits where copy 1 was; the
+     panorama's seamless wrap makes the loop point invisible. */
+  to   { transform: translate3d(-200vh, 0, 0); }
 }
 
 /* legibility veil — darkens center + edges so copy reads over any region,
@@ -131,7 +150,7 @@ body { animation: page-enter 1.1s ease-out both; }
   html { scroll-behavior: auto; }
   .dot-pulse > span { animation: none; opacity: 0.6; }
   /* hold the rotation still — rest on the nebula side of the panorama */
-  .cosmic-bg { animation: none; background-position: -150vh center; }
+  .cosmic-rail { animation: none; transform: translate3d(-120vh, 0, 0); }
   .grain { animation: none; }
   body { animation: none; opacity: 1; }
   .rise { animation: none; opacity: 1; transform: none; }
