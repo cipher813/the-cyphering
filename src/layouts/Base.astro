@@ -17,9 +17,9 @@ interface Props {
 const { title, description = SITE.description } = Astro.props;
 const pageTitle = title ? `${title} · ${SITE.name}` : SITE.name;
 
-// optimized cosmic background (4.7MB png -> lean webp) used as a fixed
-// full-bleed layer behind everything.
-const cosmic = await getImage({ src: cosmicSrc, width: 2400, format: 'webp', quality: 72 });
+// optimized cosmic background — a seamless 2:1 equirectangular 360° panorama
+// (1774×887), exported lean and tiled horizontally for the rotation.
+const cosmic = await getImage({ src: cosmicSrc, width: 1774, format: 'webp', quality: 78 });
 
 // social-share card derived from the profile art.
 const og = await getImage({ src: profileSrc, width: 1200, format: 'jpg', quality: 80 });
@@ -28,25 +28,10 @@ const ogImage = new URL(og.src, Astro.site).href;
 // inline grain so there is zero extra network request
 const grainSvg =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
-
-// faint starfield (the open sky you rotate through, behind the nebula). a
-// 300×300 seamless tile of sparse stars, inlined so there is no extra request.
-const STARS = [
-  [20, 30, 0.8, 0.7], [60, 200, 1.0, 0.5], [110, 80, 0.6, 0.8], [150, 260, 1.2, 0.6],
-  [200, 40, 0.7, 0.7], [250, 150, 0.9, 0.5], [280, 220, 0.6, 0.8], [35, 130, 1.1, 0.5],
-  [90, 290, 0.7, 0.7], [130, 170, 0.6, 0.6], [175, 110, 0.9, 0.8], [220, 280, 0.8, 0.5],
-  [265, 60, 1.0, 0.6], [15, 250, 0.6, 0.7], [70, 50, 0.7, 0.6], [120, 230, 0.8, 0.5],
-  [190, 190, 0.6, 0.8], [240, 100, 0.7, 0.7], [295, 160, 0.9, 0.5], [50, 100, 0.6, 0.6],
-  [160, 20, 0.7, 0.7], [210, 240, 0.6, 0.6],
-];
-const starCircles = STARS.map(
-  ([x, y, r, o]) => `%3Ccircle cx='${x}' cy='${y}' r='${r}' fill='%23fff' opacity='${o}'/%3E`,
-).join('');
-const starsSvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E${starCircles}%3C/svg%3E")`;
 ---
 
 <!doctype html>
-<html lang="en" style={`--grain-svg: ${grainSvg}; --stars-svg: ${starsSvg}; --cosmic-img: url('${cosmic.src}');`}>
+<html lang="en" style={`--grain-svg: ${grainSvg}; --cosmic-img: url('${cosmic.src}');`}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,8 +54,8 @@ const starsSvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
   </head>
   <body class="min-h-dvh antialiased">
     <div class="cosmic-bg" aria-hidden="true">
-      <div class="cosmic-stars"></div>
       <div class="cosmic-rail">
+        <span class="cosmic-tile"></span>
         <span class="cosmic-tile"></span>
         <span class="cosmic-tile"></span>
       </div>
