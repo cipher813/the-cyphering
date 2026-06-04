@@ -34,8 +34,10 @@ body {
 }
 
 /* the real cosmic art, full-bleed and fixed behind everything.
-   it breathes — a glacial scale/drift so the space feels alive, never static.
-   base scale is overscanned (1.04) so the drift never reveals an edge. */
+   a slow camera-style drift — the view eases around the nebula in a long
+   elliptical loop, so the space feels alive without spinning the (clearly
+   oriented) image. base scale is overscanned (>=1.09) so the drift never
+   reveals an edge: max translate ~2.6% sits well inside the ~4.5% margin. */
 .cosmic-bg {
   position: fixed;
   inset: 0;
@@ -46,16 +48,18 @@ body {
   background-position: 62% center;
   background-repeat: no-repeat;
   pointer-events: none;
-  transform: scale(1.04);
+  transform: scale(1.09);
   will-change: transform;
-  animation: cosmic-breathe 75s ease-in-out infinite;
+  animation: cosmic-drift 58s ease-in-out infinite;
 }
 
-/* felt, not seen — if you notice it moving, it's too fast */
-@keyframes cosmic-breathe {
-  0%   { transform: scale(1.04) translate3d(0, 0, 0); }
-  50%  { transform: scale(1.10) translate3d(-1.2%, -0.8%, 0); }
-  100% { transform: scale(1.04) translate3d(0, 0, 0); }
+/* barely perceptible but noticeable — a gentle orbit, not a spin */
+@keyframes cosmic-drift {
+  0%   { transform: scale(1.09) translate3d(0, 0, 0); }
+  25%  { transform: scale(1.11) translate3d(-2.6%, -1.4%, 0); }
+  50%  { transform: scale(1.10) translate3d(-1.2%, 2.0%, 0); }
+  75%  { transform: scale(1.12) translate3d(2.4%, 0.6%, 0); }
+  100% { transform: scale(1.09) translate3d(0, 0, 0); }
 }
 
 /* legibility veil — darkens center + edges so copy reads over any region,
