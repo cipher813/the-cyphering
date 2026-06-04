@@ -63,9 +63,6 @@ date it drops off the list (it lives on the streaming platforms by then).
 Upcoming/past state is computed at **build time** — push to `main` to refresh
 after a drop date passes.
 
-Copy/voice is **lowercase by default** throughout — intentional, matches the
-project's writing convention.
-
 ### build & deploy (Cloudflare Pages)
 
 ```
