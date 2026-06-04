@@ -1,28 +1,112 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import { RELEASES } from '../data/links';
+import { SPOTIFY } from '../consts';
+
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+const fmtDate = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}`;
+
+// upcoming pre-saves only — a drop falls off the list once its date passes
+// (it's on the streaming platforms by then). refreshes on deploy.
+const now = new Date();
+const upcoming = RELEASES.map((r) => ({ ...r, dt: new Date(`${r.date}T00:00:00`) }))
+  .filter((r) => r.dt > now)
+  .sort((a, b) => a.dt.getTime() - b.dt.getTime());
+
+// the player — a curated playlist if set, otherwise the artist profile (top
+// tracks). single page → the embed never reloads, so it plays continuously
+// while you scroll.
+const embedSrc = SPOTIFY.playlistId
+  ? `https://open.spotify.com/embed/playlist/${SPOTIFY.playlistId}?utm_source=generator&theme=0`
+  : `https://open.spotify.com/embed/artist/${SPOTIFY.artistId}?utm_source=generator&theme=0`;
 ---
 
 <Base>
-  <section class="flex flex-1 flex-col items-center justify-center py-12 text-center">
-    <div class="max-w-lg space-y-4 text-balance text-lg leading-relaxed text-[var(--color-ink-dim)]">
-      <p class="rise rise-1">
-        everything you are made of was forged in a dying star, and will be scattered
-        into infinite others. the cyphering is the soundtrack for the parts in between.
-      </p>
-      <p class="rise rise-2">
-        not background music. the cyphering turns the deepest questions
-        &mdash; reality, the cosmos, the self &mdash; into something you can
-        lose yourself to at full volume.
-      </p>
-    </div>
+  <!-- 1. pre-saves -->
+  {
+    upcoming.length > 0 && (
+      <section class="mt-10 w-full max-w-2xl">
+        <h2 class="mb-5 text-center font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[var(--color-ink-faint)]">
+          pre-save
+        </h2>
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {upcoming.map((r, i) => (
+            <a
+              href={r.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class:list={[
+                'group relative block overflow-hidden rounded-xl border transition-all duration-200',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
+                i === 0
+                  ? 'border-[color-mix(in_oklab,var(--color-accent)_45%,transparent)]'
+                  : 'border-[var(--color-line)] hover:border-[color-mix(in_oklab,var(--color-accent)_40%,transparent)]',
+              ]}
+            >
+              <Image
+                src={r.cover}
+                alt={`${r.title} cover art`}
+                widths={[400, 800]}
+                sizes="(min-width: 640px) 33vw, 90vw"
+                class="aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+              />
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+              <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4">
+                <span class="text-sm leading-tight tracking-wide text-[var(--color-ink)]">{r.title}</span>
+                <span class="shrink-0 font-mono text-[0.6rem] tracking-[0.15em] text-[var(--color-accent-soft)]">
+                  {fmtDate(r.dt)}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
 
-    <div class="mt-10 flex flex-col items-center gap-2">
-      <p class="rise rise-3 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)]">
-        created with AI
-      </p>
-      <p class="rise rise-4 max-w-md font-mono text-xs leading-relaxed tracking-[0.2em] text-[var(--color-ink-faint)]">
-        psytrance · hardstyle · drum and bass · progressive trance · melodic techno
-      </p>
-    </div>
+  <!-- 2. two-paragraph intro -->
+  <section class="mt-14 max-w-lg space-y-4 text-balance text-center text-lg leading-relaxed text-[var(--color-ink-dim)]">
+    <p class="rise rise-1">
+      everything you are made of was forged in a dying star, and will be scattered
+      into infinite others. the cyphering is the soundtrack for the parts in between.
+    </p>
+    <p class="rise rise-2">
+      not background music. the cyphering turns the deepest questions
+      &mdash; reality, the cosmos, the self &mdash; into something you can
+      lose yourself to at full volume.
+    </p>
+  </section>
+
+  <!-- 3. created with AI -->
+  <div class="mt-10 flex flex-col items-center gap-2 text-center">
+    <p class="rise rise-3 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)]">
+      created with AI
+    </p>
+    <p class="rise rise-4 max-w-md font-mono text-xs leading-relaxed tracking-[0.2em] text-[var(--color-ink-faint)]">
+      psytrance · hardstyle · drum and bass · progressive trance · melodic techno
+    </p>
+  </div>
+
+  <!-- 4. full spotify widget — the player (never reloads on a single page) -->
+  <section class="mt-14 w-full max-w-md">
+    <iframe
+      src={embedSrc}
+      width="100%"
+      height="480"
+      style="border-radius: 12px;"
+      loading="lazy"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      allowfullscreen
+      title="the cyphering on spotify"
+    ></iframe>
+    <a
+      href={SPOTIFY.artistUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-4 block text-center font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]"
+    >
+      previews only? log in to spotify for full tracks &rarr;
+    </a>
   </section>
 </Base>
