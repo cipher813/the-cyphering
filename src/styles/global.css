@@ -33,34 +33,55 @@ body {
   text-transform: lowercase;
 }
 
-/* the real cosmic art, full-bleed and fixed behind everything.
-   a single-direction pan: the nebula drifts steadily to the left, slides
-   off the edge, then you coast through deep-space black before it swings
-   back in from the right — as if you've rotated a full 360° to face it
-   again. the .cosmic-bg box is the black void shown during the coast. */
+/* the real cosmic art, full-bleed and fixed behind everything — staged as a
+   slow 360° rotation through deep space. the nebula eases past to the left and
+   DISSOLVES (no hard edge) into a faint, parallaxing starfield; you coast
+   through that open sky before it swings back in from the right, as if you'd
+   turned all the way around to face it again. .cosmic-bg is the black void. */
 .cosmic-bg {
   position: fixed;
   inset: 0;
   z-index: -3;
   overflow: hidden;               /* clip the over-wide rail */
-  background-color: var(--color-bg);   /* the void seen between passes */
+  background-color: var(--color-bg);   /* deep-space black behind it all */
   pointer-events: none;
 }
 
-/* the rail — two identical nebula tiles, each trailing a wide black gap,
-   sliding left at a constant rate. one full step (tile + gap) lands tile 2
-   exactly where tile 1 began, so the loop resets with no visible seam.
-   TUNING: --cosmic-gap is the black coast (bump it for a longer void,
-   shrink it to see the nebula again sooner); the pan duration sets speed. */
+/* the open sky you rotate through — a faint starfield that drifts much slower
+   than the nebula, so the parallax reads as depth, not a flat backdrop. the
+   tile is 300px wide; a 300px shift loops it seamlessly. it sits BEHIND the
+   nebula, so it only shows through the dissolve and the void. */
+.cosmic-stars {
+  position: absolute;
+  inset: 0;
+  background-image: var(--stars-svg);
+  background-repeat: repeat;
+  opacity: 0.55;
+  will-change: background-position;
+  animation: star-pan 320s linear infinite;
+}
+
+@keyframes star-pan {
+  from { background-position: 0 0; }
+  to   { background-position: -300px 0; }
+}
+
+/* the rail — two identical nebula tiles, each trailing open sky, easing left
+   at a constant rate. one full step (tile + gap) lands tile 2 exactly where
+   tile 1 began, so the rotation loops with no visible seam.
+   TUNING: pan duration = rotation speed; --cosmic-gap = how much open sky you
+   coast through (its first 100vw overlaps the dissolves, so visible void is
+   ~gap − 100vw). the tile is wider than the viewport so the dissolves live off
+   the edges while you're facing the nebula. */
 .cosmic-rail {
-  --cosmic-tile: 100vw;
-  --cosmic-gap: 140vw;            /* deep-space black between passes */
+  --cosmic-tile: 140vw;
+  --cosmic-gap: 115vw;
   position: absolute;
   inset: 0;
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: cosmic-pan 60s linear infinite;
+  animation: cosmic-pan 150s linear infinite;
 }
 
 .cosmic-tile {
@@ -73,7 +94,10 @@ body {
   /* favor the dark, deep-space left/center on tall phone viewports */
   background-position: 62% center;
   background-repeat: no-repeat;
-  transform: scale(1.06);         /* slight overscan — never a hard edge */
+  /* dissolve both side edges into the starfield — kills the hard photo edge
+     that read as an abrupt cut to black. */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 16%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 16%, #000 84%, transparent 100%);
 }
 
 @keyframes cosmic-pan {
@@ -150,8 +174,10 @@ body { animation: page-enter 1.1s ease-out both; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .dot-pulse > span { animation: none; opacity: 0.6; }
-  /* hold every atmospheric motion still — nebula rests fully in view */
-  .cosmic-rail { animation: none; transform: none; }
+  /* hold every atmospheric motion still — nebula rests centered, dissolves
+     parked off-screen so it fills the view; starfield holds too */
+  .cosmic-stars { animation: none; }
+  .cosmic-rail { animation: none; transform: translateX(calc((100vw - var(--cosmic-tile)) / 2)); }
   .grain { animation: none; }
   body { animation: none; opacity: 1; }
   .rise { animation: none; opacity: 1; transform: none; }
