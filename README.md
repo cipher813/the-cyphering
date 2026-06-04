@@ -12,16 +12,32 @@ created with AI · **psytrance · hardstyle · drum and bass · progressive tran
 
 ## listen / follow
 
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/thecyphering/)
-[![Spotify](https://img.shields.io/badge/Spotify-1DB954?style=for-the-badge&logo=spotify&logoColor=white)](https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj)
-[![Apple Music](https://img.shields.io/badge/Apple%20Music-FA243C?style=for-the-badge&logo=applemusic&logoColor=white)](https://music.apple.com/us/artist/the-cyphering/6774716662)
-[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@thecyphering)
-[![SoundCloud](https://img.shields.io/badge/SoundCloud-FF5500?style=for-the-badge&logo=soundcloud&logoColor=white)](https://soundcloud.com/thecyphering)
-[![Suno](https://img.shields.io/badge/Suno-000000?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjciLz48dGV4dCB4PSI1MCIgeT0iNTQiIGZvbnQtZmFtaWx5PSJBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+U1VOTzwvdGV4dD48L3N2Zz4=)](https://suno.com/@thecyphering)
+[![Instagram][ig-badge]][ig]
+[![Spotify][sp-badge]][sp]
+[![Apple Music][am-badge]][am]
+[![YouTube][yt-badge]][yt]
+[![SoundCloud][sc-badge]][sc]
+[![Suno][su-badge]][su]
 
 spotify is the main / primary platform; instagram is the social hub.
 
 decode@thecyphering.com
+
+<!-- platform links -->
+[ig]: https://www.instagram.com/thecyphering/
+[sp]: https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj
+[am]: https://music.apple.com/us/artist/the-cyphering/6774716662
+[yt]: https://www.youtube.com/@thecyphering
+[sc]: https://soundcloud.com/thecyphering
+[su]: https://suno.com/@thecyphering
+
+<!-- shields.io badges (suno uses the real circular logo, embedded inline) -->
+[ig-badge]: https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white
+[sp-badge]: https://img.shields.io/badge/Spotify-1DB954?style=for-the-badge&logo=spotify&logoColor=white
+[am-badge]: https://img.shields.io/badge/Apple%20Music-FA243C?style=for-the-badge&logo=applemusic&logoColor=white
+[yt-badge]: https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white
+[sc-badge]: https://img.shields.io/badge/SoundCloud-FF5500?style=for-the-badge&logo=soundcloud&logoColor=white
+[su-badge]: https://img.shields.io/badge/Suno-000000?style=for-the-badge&logo=data:image/png;base64,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
 
 ---
 
