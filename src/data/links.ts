@@ -61,7 +61,14 @@ export const RELEASES: Release[] = [
 ];
 
 // ── the platform stack (rendered as a logo-only row) ──
+// order matches the README listen/follow row:
+// instagram · spotify · apple music · youtube · soundcloud · suno
 export const LINKS: LinkItem[] = [
+  {
+    label: 'instagram',
+    href: 'https://www.instagram.com/thecyphering/',
+    icon: 'instagram',
+  },
   {
     label: 'spotify',
     href: 'https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj',
@@ -73,23 +80,18 @@ export const LINKS: LinkItem[] = [
     icon: 'applemusic',
   },
   {
-    label: 'soundcloud',
-    href: 'https://soundcloud.com/thecyphering',
-    icon: 'soundcloud',
-  },
-  {
     label: 'youtube',
     href: 'https://www.youtube.com/@thecyphering',
     icon: 'youtube',
   },
   {
+    label: 'soundcloud',
+    href: 'https://soundcloud.com/thecyphering',
+    icon: 'soundcloud',
+  },
+  {
     label: 'suno',
     href: 'https://suno.com/@thecyphering',
     icon: 'suno',
-  },
-  {
-    label: 'instagram',
-    href: 'https://www.instagram.com/thecyphering/',
-    icon: 'instagram',
   },
 ];

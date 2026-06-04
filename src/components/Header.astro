@@ -1,7 +1,9 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
 import Wordmark from './Wordmark.astro';
 import { LINKS } from '../data/links';
+import sunoLogo from '../assets/suno-logo.png';
 
 // single-page hub: the wordmark + the platform links (these replace the old
 // about/listen/links page menu — there are no sub-pages anymore).
@@ -18,22 +20,16 @@ import { LINKS } from '../data/links';
           target="_blank"
           rel="noopener noreferrer"
           aria-label={l.label}
-          class="text-[var(--color-ink-dim)] transition-colors duration-200 hover:text-[var(--color-ink)]"
+          class="group text-[var(--color-ink-dim)] transition-colors duration-200 hover:text-[var(--color-ink)]"
         >
           {l.icon === 'suno' ? (
-            <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true">
-              <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5" />
-              <text
-                x="12"
-                y="12.2"
-                text-anchor="middle"
-                dominant-baseline="central"
-                fill="currentColor"
-                style="font: 700 6.2px var(--font-sans); letter-spacing: 0.3px;"
-              >
-                SUNO
-              </text>
-            </svg>
+            <Image
+              src={sunoLogo}
+              alt=""
+              width={48}
+              height={48}
+              class="size-6 rounded-full opacity-85 transition-opacity duration-200 group-hover:opacity-100"
+            />
           ) : (
             <Icon name={`simple-icons:${l.icon}`} class="size-6" />
           )}
