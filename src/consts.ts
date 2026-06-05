@@ -26,5 +26,5 @@ export const SPOTIFY = {
 // POSTs to `${beaconUrl}/c`. Leave empty to DISABLE (the script no-ops, no errors).
 // Anonymous: no cookies, no PII; only which outbound link was clicked.
 export const ANALYTICS = {
-  beaconUrl: '',
+  beaconUrl: 'https://cyphering-clicks.cipher813.workers.dev',
 } as const;
