@@ -5,6 +5,7 @@ import type { ImageMetadata } from 'astro';
 import welcomeToTheGrid from '../assets/covers/welcome-to-the-grid.png';
 import singleFire from '../assets/covers/single-fire.png';
 import theShaping from '../assets/covers/the-shaping.png';
+import theVisitor from '../assets/covers/the-visitor.png';
 
 export type IconName =
   | 'spotify'
@@ -69,6 +70,12 @@ export const RELEASES: Release[] = [
     releaseAt: '2026-06-19T13:00:00-07:00',
     href: 'https://distrokid.com/hyperfollow/thecyphering/the-shaping?ref=release',
     cover: theShaping,
+  },
+  {
+    title: 'the visitor',
+    releaseAt: '2026-06-26T13:00:00-07:00',
+    href: 'https://distrokid.com/hyperfollow/thecyphering/the-visitor?ref=release',
+    cover: theVisitor,
   },
 ];
 
