@@ -1,8 +1,13 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { RELEASES } from '../data/links';
+import releasesManifest from '../data/releases.json';
 import { SPOTIFY } from '../consts';
+
+// the pre-save queue data. SINGLE SOURCE OF TRUTH is the-cyphering-ops/
+// releases.yaml; releases.json is a generated artifact (the signal "add
+// release" form regenerates + commits it). `cover` is a URL string (site-hosted
+// /covers/*.webp or a remote DistroKid imgix URL for auto-fetched covers).
+const RELEASES = releasesManifest.releases;
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const fmtDate = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}`;
@@ -78,11 +83,11 @@ const embedSrc = SPOTIFY.playlistId
                   !visibleInitial.has(r.releaseAt) && 'hidden',
                 ]}
               >
-                <Image
+                <img
                   src={r.cover}
                   alt={`${r.title} cover art`}
-                  widths={[400, 800]}
-                  sizes="(min-width: 640px) 33vw, 90vw"
+                  loading="lazy"
+                  decoding="async"
                   class="aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
                 />
                 <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />

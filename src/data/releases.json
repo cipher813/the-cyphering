@@ -1,0 +1,29 @@
+{
+  "_comment": "GENERATED ARTIFACT — do not hand-edit. Single source of truth is the-cyphering-ops/releases.yaml; the signal 'add release' form regenerates this file. `cover` is a URL: /covers/<slug>.webp for site-hosted art, or a remote (DistroKid imgix) URL for auto-fetched covers. releaseAt is ISO-8601 with the correct PT offset.",
+  "releases": [
+    {
+      "title": "welcome to the grid",
+      "releaseAt": "2026-06-05T13:00:00-07:00",
+      "href": "https://distrokid.com/hyperfollow/thecyphering/welcome-to-the-grid?ref=release",
+      "cover": "/covers/welcome-to-the-grid.webp"
+    },
+    {
+      "title": "single fire",
+      "releaseAt": "2026-06-12T13:00:00-07:00",
+      "href": "https://distrokid.com/hyperfollow/thecyphering/single-fire?ref=release",
+      "cover": "/covers/single-fire.webp"
+    },
+    {
+      "title": "the shaping",
+      "releaseAt": "2026-06-19T13:00:00-07:00",
+      "href": "https://distrokid.com/hyperfollow/thecyphering/the-shaping?ref=release",
+      "cover": "/covers/the-shaping.webp"
+    },
+    {
+      "title": "the visitor",
+      "releaseAt": "2026-06-26T13:00:00-07:00",
+      "href": "https://distrokid.com/hyperfollow/thecyphering/the-visitor?ref=release",
+      "cover": "/covers/the-visitor.webp"
+    }
+  ]
+}
