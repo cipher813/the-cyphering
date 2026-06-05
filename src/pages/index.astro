@@ -7,12 +7,33 @@ import { SPOTIFY } from '../consts';
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const fmtDate = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}`;
 
-// upcoming pre-saves only — a drop falls off the list once its date passes
-// (it's on the streaming platforms by then). refreshes on deploy.
-const now = new Date();
-const upcoming = RELEASES.map((r) => ({ ...r, dt: new Date(`${r.date}T00:00:00`) }))
-  .filter((r) => r.dt > now)
-  .sort((a, b) => a.dt.getTime() - b.dt.getTime());
+// the pre-save queue. a card is "pre-save" before its release moment,
+// "out now" for OUT_NOW_DAYS after, then it drops off. only the nearest 3
+// non-expired releases render; the rest queue behind and surface as earlier
+// ones expire. The authoritative selection runs CLIENT-SIDE (see <script>
+// below) so the queue advances at the real release moment with NO redeploy —
+// the server render here is a build-time-correct fallback for no-JS.
+const OUT_NOW_DAYS = 7;
+const VISIBLE = 3;
+const OUT_NOW_MS = OUT_NOW_DAYS * 24 * 60 * 60 * 1000;
+const nowMs = Date.now();
+
+const stateAt = (ts: number) =>
+  nowMs < ts ? 'presave' : nowMs - ts < OUT_NOW_MS ? 'outnow' : 'expired';
+
+// sorted ascending by release moment → out-now (earliest) sits ahead of the
+// soonest pre-save, so taking the first N non-expired in DOM order is correct.
+const cards = RELEASES.map((r) => ({ ...r, dt: new Date(r.releaseAt) })).sort(
+  (a, b) => a.dt.getTime() - b.dt.getTime(),
+);
+const visibleInitial = new Set(
+  cards
+    .filter((r) => stateAt(r.dt.getTime()) !== 'expired')
+    .slice(0, VISIBLE)
+    .map((r) => r.releaseAt),
+);
+const leadInitial = cards.find((r) => visibleInitial.has(r.releaseAt))?.releaseAt;
+const hasInitial = visibleInitial.size > 0;
 
 // the player — a curated playlist if set, otherwise the artist profile (top
 // tracks). single page → the embed never reloads, so it plays continuously
@@ -23,43 +44,48 @@ const embedSrc = SPOTIFY.playlistId
 ---
 
 <Base>
-  <!-- 1. pre-saves -->
+  <!-- 1. release queue (pre-save → out now → drops off; client-advanced) -->
   {
-    upcoming.length > 0 && (
-      <section class="mt-10 w-full max-w-2xl">
+    hasInitial && (
+      <section id="presave-section" class="mt-10 w-full max-w-2xl">
         <h2 class="mb-5 text-center font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[var(--color-ink-faint)]">
-          pre-save
+          latest
         </h2>
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-          {upcoming.map((r, i) => (
-            <a
-              href={r.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class:list={[
-                'group relative block overflow-hidden rounded-xl border transition-all duration-200',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
-                i === 0
-                  ? 'border-[color-mix(in_oklab,var(--color-accent)_45%,transparent)]'
-                  : 'border-[var(--color-line)] hover:border-[color-mix(in_oklab,var(--color-accent)_40%,transparent)]',
-              ]}
-            >
-              <Image
-                src={r.cover}
-                alt={`${r.title} cover art`}
-                widths={[400, 800]}
-                sizes="(min-width: 640px) 33vw, 90vw"
-                class="aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
-              />
-              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
-              <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4">
-                <span class="text-sm leading-tight tracking-wide text-[var(--color-ink)]">{r.title}</span>
-                <span class="shrink-0 font-mono text-[0.6rem] tracking-[0.15em] text-[var(--color-accent-soft)]">
-                  {fmtDate(r.dt)}
-                </span>
-              </div>
-            </a>
-          ))}
+        <div id="presave-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {cards.map((r) => {
+            const st = stateAt(r.dt.getTime());
+            return (
+              <a
+                href={r.href}
+                data-release-at={r.releaseAt}
+                data-state={st}
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  'release-card group relative block overflow-hidden rounded-xl border border-[var(--color-line)] transition-all duration-200',
+                  'hover:border-[color-mix(in_oklab,var(--color-accent)_40%,transparent)]',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
+                  r.releaseAt === leadInitial && 'is-lead',
+                  !visibleInitial.has(r.releaseAt) && 'hidden',
+                ]}
+              >
+                <Image
+                  src={r.cover}
+                  alt={`${r.title} cover art`}
+                  widths={[400, 800]}
+                  sizes="(min-width: 640px) 33vw, 90vw"
+                  class="aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+                <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4">
+                  <span class="text-sm leading-tight tracking-wide text-[var(--color-ink)]">{r.title}</span>
+                  <span class="js-release-label shrink-0 font-mono text-[0.6rem] tracking-[0.15em] text-[var(--color-accent-soft)]">
+                    {st === 'outnow' ? 'out now' : fmtDate(r.dt)}
+                  </span>
+                </div>
+              </a>
+            );
+          })}
         </div>
       </section>
     )
@@ -110,3 +136,87 @@ const embedSrc = SPOTIFY.playlistId
     </a>
   </section>
 </Base>
+
+<style>
+  /* lead card gets a faint accent border; out-now label brightens. JS toggles
+     .is-lead and data-state as the queue advances. */
+  .release-card.is-lead {
+    border-color: color-mix(in oklab, var(--color-accent) 45%, transparent);
+  }
+  .release-card[data-state='outnow'] .js-release-label {
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  // Client-side queue advance: recompute pre-save / out-now / expired from the
+  // visitor's clock so the queue rolls over at the real release moment with no
+  // redeploy. Cards are rendered ascending by date, so the first N non-expired
+  // in DOM order are the ones to show (out-now first, then soonest pre-saves).
+  const OUT_NOW_DAYS = 7;
+  const VISIBLE = 3;
+  const OUT_NOW_MS = OUT_NOW_DAYS * 24 * 60 * 60 * 1000;
+  const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+
+  function render() {
+    const section = document.getElementById('presave-section');
+    if (!section) return;
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>('.release-card'),
+    );
+    const now = Date.now();
+    let shown = 0;
+    let leadSet = false;
+    let nextBoundary = Infinity;
+
+    for (const card of cards) {
+      const ts = new Date(card.dataset.releaseAt ?? '').getTime();
+      if (Number.isNaN(ts)) {
+        card.classList.add('hidden');
+        continue;
+      }
+      const state = now < ts ? 'presave' : now - ts < OUT_NOW_MS ? 'outnow' : 'expired';
+      card.dataset.state = state;
+
+      const label = card.querySelector<HTMLElement>('.js-release-label');
+      if (label) {
+        if (state === 'outnow') {
+          label.textContent = 'out now';
+        } else if (state === 'presave') {
+          const d = new Date(ts);
+          label.textContent = `${MONTHS[d.getMonth()]} ${d.getDate()}`;
+        }
+      }
+
+      const show = state !== 'expired' && shown < VISIBLE;
+      card.classList.toggle('hidden', !show);
+      card.classList.toggle('is-lead', show && !leadSet);
+      if (show) {
+        shown += 1;
+        leadSet = true;
+      }
+
+      // earliest upcoming transition (release moment, or out-now expiry)
+      for (const b of [ts, ts + OUT_NOW_MS]) {
+        if (b > now && b < nextBoundary) nextBoundary = b;
+      }
+    }
+
+    section.classList.toggle('hidden', shown === 0);
+
+    // re-render at the next state change for a page left open; clamp so we also
+    // re-check periodically (clock drift / backgrounded tabs).
+    clearTimeout(timer);
+    if (nextBoundary !== Infinity) {
+      const delay = Math.min(nextBoundary - now + 1000, 6 * 60 * 60 * 1000);
+      timer = setTimeout(render, delay);
+    }
+  }
+
+  render();
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) render();
+  });
+</script>
