@@ -19,3 +19,12 @@ export const SPOTIFY = {
   artistUrl: 'https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj',
   playlistId: '',
 } as const;
+
+// own-funnel click logger (Cloudflare Worker → D1, repo the-cyphering-ops).
+// Fill `beaconUrl` with the deployed Worker base URL — `npx wrangler deploy`
+// prints it (e.g. https://cyphering-clicks.<subdomain>.workers.dev). The beacon
+// POSTs to `${beaconUrl}/c`. Leave empty to DISABLE (the script no-ops, no errors).
+// Anonymous: no cookies, no PII; only which outbound link was clicked.
+export const ANALYTICS = {
+  beaconUrl: '',
+} as const;
