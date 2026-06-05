@@ -70,5 +70,56 @@ const grainSvg =
       </main>
       <Footer />
     </div>
+
+    <script>
+      // Own-funnel click beacon: on any outbound-link click, fire-and-forget a
+      // sendBeacon to the cyphering click logger (Worker → D1). Never blocks
+      // navigation. Anonymous — sends only the destination key + optional
+      // release slug. No-ops when beaconUrl is unset.
+      import { ANALYTICS } from '../consts';
+
+      const base = ANALYTICS.beaconUrl;
+      if (base) {
+        const HOST_MAP: Record<string, string> = {
+          'open.spotify.com': 'spotify',
+          'music.apple.com': 'apple',
+          'youtube.com': 'youtube',
+          'www.youtube.com': 'youtube',
+          'youtu.be': 'youtube',
+          'soundcloud.com': 'soundcloud',
+          'suno.com': 'suno',
+          'instagram.com': 'instagram',
+          'www.instagram.com': 'instagram',
+          'distrokid.com': 'presave',
+        };
+        document.addEventListener(
+          'click',
+          (e) => {
+            const el = e.target as Element | null;
+            const a = el?.closest?.('a[href]') as HTMLAnchorElement | null;
+            if (!a) return;
+            let host: string;
+            try {
+              host = new URL(a.href).host;
+            } catch {
+              return;
+            }
+            if (host === location.host) return; // outbound only
+            const payload: { target: string; release_id?: string } = {
+              target: HOST_MAP[host] || host.replace(/^www\./, ''),
+            };
+            const rel = a.closest('[data-release]')?.getAttribute('data-release');
+            if (rel) payload.release_id = rel;
+            try {
+              // string body → text/plain → CORS-simple, no preflight on sendBeacon
+              navigator.sendBeacon(base + '/c', JSON.stringify(payload));
+            } catch {
+              /* never block the click */
+            }
+          },
+          { capture: true },
+        );
+      }
+    </script>
   </body>
 </html>

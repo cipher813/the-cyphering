@@ -7,6 +7,14 @@ import { SPOTIFY } from '../consts';
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const fmtDate = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}`;
 
+// release slug — matches the release_id in the-cyphering-ops releases.yaml, so
+// presave clicks attribute to the right release in the funnel (data-release).
+const slug = (t: string) =>
+  t
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
 // the pre-save queue. a card is "pre-save" before its release moment,
 // "out now" for OUT_NOW_DAYS after, then it drops off. only the nearest 3
 // non-expired releases render; the rest queue behind and surface as earlier
@@ -58,6 +66,7 @@ const embedSrc = SPOTIFY.playlistId
               <a
                 href={r.href}
                 data-release-at={r.releaseAt}
+                data-release={slug(r.title)}
                 data-state={st}
                 target="_blank"
                 rel="noopener noreferrer"
