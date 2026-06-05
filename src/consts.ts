@@ -17,7 +17,7 @@ export const SITE = {
 export const SPOTIFY = {
   artistId: '26NXjTgaOj9Qp2qQh6FIEj',
   artistUrl: 'https://open.spotify.com/artist/26NXjTgaOj9Qp2qQh6FIEj',
-  playlistId: '',
+  playlistId: '7ESUudEoqbiKBWswgHG0bI',
 } as const;
 
 // own-funnel click logger (Cloudflare Worker → D1, repo the-cyphering-ops).
