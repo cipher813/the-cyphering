@@ -72,12 +72,20 @@ The spotify embed (the always-on player) is configured in **`src/consts.ts`**.
 
 ### releases / pre-saves
 
-Pre-saves are handled by **DistroKid HyperFollow** (free, OAuth-backed). Each
-release is an entry in the `RELEASES` array in `src/data/links.ts` with its
-cover art. Before its `date` it shows as an upcoming pre-save card; on/after the
-date it drops off the list (it lives on the streaming platforms by then).
-Upcoming/past state is computed at **build time** — push to `main` to refresh
-after a drop date passes.
+Pre-saves are handled by **DistroKid HyperFollow** (free, OAuth-backed). The
+queue renders from **`src/data/releases.json`** — a GENERATED artifact; do not
+hand-edit it. The single source of truth is `the-cyphering-ops/releases.yaml`.
+A card shows as an upcoming pre-save before its `releaseAt`, spotlights as
+"out now" for a week after, then drops off — all advanced **client-side**, so
+the queue rolls over at the real release moment with no redeploy.
+
+**To add a release:** drop the hyperfollow URL into the "➕ add a release" form
+on **signal** (signal.thecyphering.com), or run
+`python -m release.add_release <url> --push` in `the-cyphering-ops`. Either way
+it appends to `releases.yaml`, regenerates this `releases.json`, and commits
+both to `main` — Cloudflare Pages rebuilds and the card appears. Covers are
+auto-fetched from the hyperfollow `og:image`; site-hosted covers live in
+`public/covers/<slug>.webp`.
 
 ### build & deploy (Cloudflare Pages)
 
