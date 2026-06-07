@@ -21,21 +21,12 @@ import { LINKS } from '../data/links';
           class="text-[var(--color-ink-dim)] transition-colors duration-200 hover:text-[var(--color-ink)]"
         >
           {l.icon === 'suno' ? (
-            // suno isn't a simple-icons glyph; draw its circle + wordmark in
-            // currentColor so it sits in the same monochrome light/dark style
-            // (ink-dim → ink on hover) as the rest of the row.
-            <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true">
-              <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5" />
-              <text
-                x="12"
-                y="12.2"
-                text-anchor="middle"
-                dominant-baseline="central"
-                fill="currentColor"
-                style="font: 700 6.2px var(--font-sans); letter-spacing: 0.3px;"
-              >
-                SUNO
-              </text>
+            // suno isn't a simple-icons glyph; draw its real "sliced egg" S-mark
+            // (the official sine-wave/egg logo path) as a solid currentColor fill
+            // so it sits in the same monochrome light/dark style (ink-dim → ink on
+            // hover) as the rest of the row.
+            <svg viewBox="0 0 24 24" class="size-6" fill="currentColor" aria-hidden="true">
+              <path d="M16.5 0C20.642 0 24 5.373 24 12h-9c0 6.627-3.358 12-7.5 12C3.358 24 0 18.627 0 12h9c0-6.627 3.358-12 7.5-12z" />
             </svg>
           ) : (
             <Icon name={`simple-icons:${l.icon}`} class="size-6" />
