@@ -1,5 +1,5 @@
 {
-  "_comment": "GENERATED ARTIFACT — do not hand-edit. Single source of truth is the-cyphering-ops/releases.yaml; the signal 'add release' form regenerates this file. `cover` is a URL: /covers/<slug>.webp for site-hosted art, or a remote (DistroKid imgix) URL for auto-fetched covers. releaseAt is ISO-8601 with the correct PT offset.",
+  "_comment": "GENERATED ARTIFACT \u2014 do not hand-edit. Single source of truth is the-cyphering-ops/releases.yaml; the signal 'add release' form regenerates this file. `cover` is a URL: /covers/<slug>.webp for site-hosted art, or a remote (DistroKid imgix) URL for auto-fetched covers. releaseAt is ISO-8601 with the correct PT offset.",
   "releases": [
     {
       "title": "welcome to the grid",
@@ -24,6 +24,12 @@
       "releaseAt": "2026-06-26T13:00:00-07:00",
       "href": "https://distrokid.com/hyperfollow/thecyphering/the-visitor?ref=release",
       "cover": "/covers/the-visitor.webp"
+    },
+    {
+      "title": "only the now",
+      "releaseAt": "2026-07-03T13:00:00-07:00",
+      "href": "https://distrokid.com/hyperfollow/thecyphering/only-the-now?ref=release",
+      "cover": "https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F12828073--8629BB7B-39FF-47D0-A43EC9F8A5FF0B02--0--3192075--OnlyTheNowfull.png?fm=jpg&mark-y=568&mark-x=620&mark-w=180&q=75&w=800&mark=http%3A%2F%2Fgather.fandalism.com%2Fdistrokid-sticker-sm.png&s=4e4ecf1dba43a00438b22fd0bad6be44"
     }
   ]
 }
