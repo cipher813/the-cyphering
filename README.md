@@ -43,6 +43,10 @@ decode@thecyphering.com
 
 ## about this repo
 
+[![ci](https://github.com/cipher813/the-cyphering/actions/workflows/ci.yml/badge.svg)](https://github.com/cipher813/the-cyphering/actions/workflows/ci.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![built with astro](https://img.shields.io/badge/built%20with-astro-BC52EE?logo=astro&logoColor=white)](https://astro.build)
+
 The artist site for **thecyphering.com** — a single page that doubles as the
 link hub for the instagram bio link. it shows upcoming pre-saves, a two-line
 intro, and a continuously-playing spotify embed.
@@ -55,7 +59,11 @@ deployed as a static site on Cloudflare Pages.
 ```
 npm install
 npm run dev      # http://localhost:4321
+npm test         # releases.json + links.ts contract tests (vitest)
+npm run check    # astro type check
 ```
+
+CI (`.github/workflows/ci.yml`) runs check → test → build on every push/PR.
 
 ### edit the links
 
