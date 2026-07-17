@@ -108,7 +108,51 @@ const youtubeEmbedSrc = `https://www.youtube-nocookie.com/embed/videoseries?list
     )
   }
 
-  <!-- 2. two-paragraph intro -->
+  <!-- 2. spotify + youtube, side by side (spotify left, youtube right) -->
+  <section class="mt-14 grid w-full max-w-2xl grid-cols-1 gap-6 sm:grid-cols-2">
+    <div>
+      <iframe
+        src={embedSrc}
+        width="100%"
+        height="480"
+        style="border-radius: 12px;"
+        loading="lazy"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        allowfullscreen
+        title="the cyphering on spotify"
+      ></iframe>
+      <a
+        href={SPOTIFY.artistUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-4 block text-center font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]"
+      >
+        previews only? log in to spotify for full tracks &rarr;
+      </a>
+    </div>
+    <div>
+      <iframe
+        src={youtubeEmbedSrc}
+        width="100%"
+        height="480"
+        style="border-radius: 12px;"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+        allowfullscreen
+        title="the cyphering on youtube"
+      ></iframe>
+      <a
+        href={YOUTUBE.playlistUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-4 block text-center font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]"
+      >
+        watch on youtube &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- 3. two-paragraph intro -->
   <section class="mt-14 max-w-lg space-y-4 text-balance text-center text-lg leading-relaxed text-[var(--color-ink-dim)]">
     <p class="rise rise-1">
       everything you are made of was forged in a dying star, and will be scattered
@@ -121,7 +165,7 @@ const youtubeEmbedSrc = `https://www.youtube-nocookie.com/embed/videoseries?list
     </p>
   </section>
 
-  <!-- 3. created with AI -->
+  <!-- 4. created with AI -->
   <div class="mt-10 flex flex-col items-center gap-2 text-center">
     <p class="rise rise-3 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)]">
       created with AI
@@ -130,50 +174,6 @@ const youtubeEmbedSrc = `https://www.youtube-nocookie.com/embed/videoseries?list
       psytrance · hardstyle · drum and bass · progressive trance · melodic techno
     </p>
   </div>
-
-  <!-- 4. full spotify widget — the player (never reloads on a single page) -->
-  <section class="mt-14 w-full max-w-md">
-    <iframe
-      src={embedSrc}
-      width="100%"
-      height="480"
-      style="border-radius: 12px;"
-      loading="lazy"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      allowfullscreen
-      title="the cyphering on spotify"
-    ></iframe>
-    <a
-      href={SPOTIFY.artistUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mt-4 block text-center font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]"
-    >
-      previews only? log in to spotify for full tracks &rarr;
-    </a>
-  </section>
-
-  <!-- 5. youtube playlist -->
-  <section class="mt-10 w-full max-w-md">
-    <iframe
-      src={youtubeEmbedSrc}
-      width="100%"
-      height="270"
-      style="border-radius: 12px;"
-      loading="lazy"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-      allowfullscreen
-      title="the cyphering on youtube"
-    ></iframe>
-    <a
-      href={YOUTUBE.playlistUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mt-4 block text-center font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]"
-    >
-      watch on youtube &rarr;
-    </a>
-  </section>
 </Base>
 
 <style>
