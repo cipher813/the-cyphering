@@ -20,6 +20,14 @@ export const SPOTIFY = {
   playlistId: '7ESUudEoqbiKBWswgHG0bI',
 } as const;
 
+// youtube playlist embed, alongside the spotify player. privacy-enhanced
+// (youtube-nocookie.com) domain, lazy-loaded, no external widget lib.
+export const YOUTUBE = {
+  playlistId: 'PLZ6okZk2caBUgwzZJnxt2VP47zS4S13vr',
+  playlistUrl:
+    'https://www.youtube.com/playlist?list=PLZ6okZk2caBUgwzZJnxt2VP47zS4S13vr',
+} as const;
+
 // own-funnel click logger (Cloudflare Worker → D1, repo the-cyphering-ops).
 // Fill `beaconUrl` with the deployed Worker base URL — `npx wrangler deploy`
 // prints it (e.g. https://cyphering-clicks.<subdomain>.workers.dev). The beacon

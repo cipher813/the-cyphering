@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import releasesManifest from '../data/releases.json';
-import { SPOTIFY } from '../consts';
+import { SPOTIFY, YOUTUBE } from '../consts';
 
 // the pre-save queue data. SINGLE SOURCE OF TRUTH is the-cyphering-ops/
 // releases.yaml; releases.json is a generated artifact (the signal "add
@@ -54,6 +54,9 @@ const hasInitial = visibleInitial.size > 0;
 const embedSrc = SPOTIFY.playlistId
   ? `https://open.spotify.com/embed/playlist/${SPOTIFY.playlistId}?utm_source=generator&theme=0`
   : `https://open.spotify.com/embed/artist/${SPOTIFY.artistId}?utm_source=generator&theme=0`;
+
+// youtube playlist player — privacy-enhanced domain, no autoplay.
+const youtubeEmbedSrc = `https://www.youtube-nocookie.com/embed/videoseries?list=${YOUTUBE.playlistId}`;
 ---
 
 <Base>
@@ -147,6 +150,28 @@ const embedSrc = SPOTIFY.playlistId
       class="mt-4 block text-center font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]"
     >
       previews only? log in to spotify for full tracks &rarr;
+    </a>
+  </section>
+
+  <!-- 5. youtube playlist -->
+  <section class="mt-10 w-full max-w-md">
+    <iframe
+      src={youtubeEmbedSrc}
+      width="100%"
+      height="270"
+      style="border-radius: 12px;"
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+      allowfullscreen
+      title="the cyphering on youtube"
+    ></iframe>
+    <a
+      href={YOUTUBE.playlistUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-4 block text-center font-mono text-xs tracking-[0.2em] text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink-dim)]"
+    >
+      watch on youtube &rarr;
     </a>
   </section>
 </Base>
