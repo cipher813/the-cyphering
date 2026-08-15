@@ -94,11 +94,11 @@ const youtubeEmbedSrc = `https://www.youtube-nocookie.com/embed/videoseries?list
                   class="aspect-[3/2] w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
                 />
                 <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
-                <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4">
+                <span class="js-release-label pointer-events-none absolute right-3 top-3 shrink-0 rounded-md bg-black/60 px-2 py-1 font-mono text-[0.6rem] tracking-[0.15em] text-[var(--color-accent-soft)] backdrop-blur-sm">
+                  {st === 'outnow' ? 'out now' : fmtDate(r.dt)}
+                </span>
+                <div class="absolute inset-x-0 bottom-0 p-4">
                   <span class="text-sm leading-tight tracking-wide text-[var(--color-ink)]">{r.title}</span>
-                  <span class="js-release-label shrink-0 font-mono text-[0.6rem] tracking-[0.15em] text-[var(--color-accent-soft)]">
-                    {st === 'outnow' ? 'out now' : fmtDate(r.dt)}
-                  </span>
                 </div>
               </a>
             );
